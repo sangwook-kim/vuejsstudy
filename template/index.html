@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue template syntax</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <span class="interpol">메시지: {{msg}}</span>
+    <br/>
+    <span v-once class="vonce">다시는 변경하지 않습니다: {{msg}}</span>
+    <div class="rhtml" v-html="rawHtml"></div>
+    <h1 v-bind:id="dynamicId" class="vbindID">속성 바인드</h1>
+    <input v-bind:disabled="isInputDisabled" type="text" class="vbindDisabled" placeholder="다죽자">
+    <div class="jsExpression" v-bind:id="'list-' + id">
+        {{number + 1}}<br/>
+        {{ok? 'YES': 'NO'}}<br/>
+        {{message.split('').reverse().join('')}}
+    </div>
+    <h3>
+        <a v-once v-bind:href="url" v-on:click.prevent="doSomething">battery</a>
+    </h3>
+    <div class="filter" v-bind:id="rawId | formatId">
+        {{message | capitalize | filterA('arg1', 'arg2')}}
+    </div>
+    
+    
+<script>
+'use strict';
+let msg = new Vue({
+        el: '.interpol',
+        data: {
+            msg: 'Interpol is after you'
+        }
+    }),
+    vonce = new Vue({
+        el: '.vonce',
+        data: {
+            msg: '원쓰'
+        }
+    }),
+    rHTML = new Vue({
+        el: '.rhtml',
+        data: {
+            rawHtml: '이거 <em>실화</em>냐'
+        }
+    }),
+    dynamicID = new Vue({
+        el: '.vbindID',
+        data: {
+            dynamicId: 'anger'
+        }
+    }),
+    vDisabled = new Vue({
+        el: '.vbindDisabled',
+        data: {
+            isInputDisabled: true
+        }
+    }),
+    jsBind = new Vue({
+        el: '.jsExpression',
+        data: {
+            id: '01',
+            ok: true,
+            number: 999,
+            message: 'asdf'
+        }
+    }),
+    battery = new Vue({
+        el: 'h3>a',
+        data: {
+            url: 'http://www.google.com',
+            doSomething: function() {
+                console.log('asdf');
+            }
+        }
+    }),
+    filterTest = new Vue({
+        el: '.filter',
+        data: {
+            rawId: 'rawPower',
+            message: 'scumm'
+        },
+        filters: {
+            capitalize: function(value) {
+                if(!value) return '';
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            },
+            formatId: function(rawID) {
+                return rawID.toLowerCase();
+            },
+            filterA: function(value) {
+                console.log(Array.from(arguments).join(' '));
+                return value;
+            }
+        }
+    });
+
+
+
+</script>
+</body>
+</html>

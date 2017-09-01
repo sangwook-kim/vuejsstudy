@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conditional Rendering</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="vm1">
+    <template v-if="Math.random() > 0.5">
+        <h1>야호</h1>
+        <p>이제 당신은</p>
+        <p>나를 볼수 있습니다</p>
+    </template>
+    <template v-else>
+        <h1>아흑</h1>
+        <p>지금 당신은</p>
+        <p>나를 볼수 없습니다</p>
+    </template>
+    </div>
+    <div id="vm2" class="vms">
+        <template v-if="loginType === 'username'">
+            <label for="">사용자 이름</label>
+            <input type="" placeholder="사용자 이름을 입력하세요">
+        </template>
+        <template v-else="">
+            <label for="">이메일</label>
+            <input type="" placeholder="이메일 주소를 입력하세요">
+        </template>
+            <button @click="toggleInputType">로그인 유형 변경</button>
+    </div>
+    <div id="vm3" class="vms">
+        <template v-if="loginType === 'username'">
+            <label for="">사용자 이름</label>
+            <input type="" placeholder="사용자 이름을 입력하세요" key="username-input">
+        </template>
+        <template v-else="">
+            <label for="">이메일</label>
+            <input type="" placeholder="이메일 주소를 입력하세요" key="email-input">
+        </template>
+            <button @click="toggleInputType">로그인 유형 변경</button>
+    </div>
+    <div id="vm4">
+        <h1 v-show="ok">안녕하세요</h1>
+    </div>
+<script>
+var vm1 = new Vue({
+    el: '#vm1'
+});
+var vm2 = new Vue({
+    el: '#vm2',
+    data: {
+        loginType: 'username'
+    },
+    methods: {
+        toggleInputType: function() {
+            if(this.loginType === 'username') 
+                this.loginType = 'email';
+            else 
+                this.loginType = 'username';
+        }
+    }
+});
+var vm3 = new Vue({
+    el: '#vm3',
+    data: {
+        loginType: 'username'
+    },
+    methods: {
+        toggleInputType: function() {
+            if(this.loginType === 'username') 
+                this.loginType = 'email';
+            else 
+                this.loginType = 'username';
+        }
+    }
+});
+var vm4 = new Vue({
+    el: '#vm4',
+    data: {
+        ok: true
+    }
+});
+</script>
+</body>
+</html>

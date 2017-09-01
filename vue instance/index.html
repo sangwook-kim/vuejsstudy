@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>view instances</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app1">
+        <span>{{message}}</span>
+    </div>
+    
+<script>
+var vm = new Vue({
+    el: '#app1',
+    data: {
+        message: 'hi'
+    },
+    beforeCreate: function() {
+        console.log('before create');
+    },
+    created: function() {
+        console.log('created');
+    },
+    beforeMount: function() {
+        console.log('before mount');
+    },
+    mounted: function() {
+        console.log('mounted');
+    },
+    beforeUpdate: function() {
+        console.log('before update');
+    },
+    updated: function() {
+        console.log('updated');
+    },
+    beforeDestroy: function() {
+        console.log('before destroy');
+    },
+    destroyed: function() {
+        console.log('destroyed');
+    }
+});
+</script>
+</body>
+</html>

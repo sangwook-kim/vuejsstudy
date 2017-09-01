@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class and Style Binding</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="vm1" class="static" v-bind:class="{active: isActive, 'text-danger': hasError}"></div>
+    <div id="vm2" class="static" v-bind:class="classObject"></div>
+    <div id="vm3" class="static" v-bind:class="classObject"></div>
+    <div id="vm4" v-bind:class="[activeClass, errorClass]"></div>
+    <div id="vm5" v-bind:class="[isActive? activeClass: '', errorClass]"></div>
+    <div id="vm6" v-bind:class="[{active: isActive}, errorClass]"></div>
+    <div id="vm7">
+        <my-component class="baz boo" v-bind:class="{active: isActive}"></my-component>
+    </div>
+    <div id="vm8" v-bind:style="{color: activeColor, fontSize: fontSize + 'px'}"></div>
+    <div id="vm9" v-bind:style="styleObject">asdf</div>
+<script>
+var vm1 = new Vue({
+    el: '#vm1',
+    data: {
+        isActive: true,
+        hasError: false
+    }
+});
+var vm2 = new Vue({
+    el: '#vm2',
+    data: {
+        classObject: {
+            active: true,
+            'text-danger': true
+        }
+    }
+});
+var vm3 = new Vue({
+    el: '#vm3',
+    data: {
+        isActive: true,
+        error: null
+    },
+    computed: {
+        classObject: function() {
+            return {
+                active: this.isActive && !this.error,
+                'text-danger': this.error && this.error.type === 'fatal'
+            }
+        }
+    }
+});
+var vm4 = new Vue({
+    el: '#vm4',
+    data: {
+        activeClass: 'active',
+        errorClass: 'text-danger'
+    }
+});
+var vm5 = new Vue({
+    el: '#vm5',
+    data: {
+        isActive: true,
+        activeClass: 'active',
+        errorClass: 'text-danger'
+    }
+});
+var vm6 = new Vue({
+    el: '#vm6',
+    data: {
+        isActive: true,
+        errorClass: 'text-danger'
+    }
+});
+Vue.component('my-component', {
+      template: '<p class="foo bar">Hi</p>'
+})
+var vm7 = new Vue({
+    el: '#vm7',
+    data: {
+        isActive: true
+    }
+});
+var vm8 = new Vue({
+    el: '#vm8',
+    data: {
+        activeColor: 'red',
+        fontSize: 30
+    }
+});
+var vm9 = new Vue({
+    el: '#vm9',
+    data: {
+        styleObject: {
+            color: 'green',
+            fontSize: 13 + 'px'
+        }
+    }
+});
+</script>
+</body>
+</html>
