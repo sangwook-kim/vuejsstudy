@@ -4,8 +4,154 @@
     <meta charset="UTF-8">
     <title>드디어 Component!</title>
     <script src="https://unpkg.com/vue"></script>
+    <style>
+.container {
+    margin: 5px;
+    padding: 4px;
+    border: 1px #000 solid;
+    border-radius: 3px;
+}
+    </style>
 </head>
 <body>
-    
+    <div id="example" class="container">
+        <my-component></my-component>
+    </div>
+    <div id="example-2" class="container">
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+    </div>
+    <div id="example-3" class="container">
+        <child my-message="안녕하세요"></child>
+    </div>
+    <div id="example-4" class="container">
+        <input type="text" v-model="parentMsg">
+        <br>
+        <child v-bind:my-message="parentMsg"></child>
+    </div>
+
+    <div id="counter-event-example" class="container">
+        <p>{{total}}</p>
+        <button-counter v-on:increment="incrementTotal" v-on:click.native="doTheThing"></button-counter>
+        <button-counter v-on:increment="incrementTotal" v-on:click.native="doTheThing"></button-counter>
+    </div>
+
+    <div id="custom-input" class="container">
+        <currency-input v-model="price"></currency-input>
+    </div>
+
+    <script>
+/*
+Vue.component('my-component', {template: '<div>사용자 정의 컴포넌트 입니다!</div>'});
+
+new Vue({el: '#example'});
+*/
+
+var Child = {
+    template: '<div>로칼 사용자 정의 컴포넌트 입니다!</div>'
+}
+
+new Vue({
+    el: '#example',
+    components: {
+        'my-component': Child
+    }
+});
+
+Vue.component('simple-counter', {
+    template: '<button v-on:click="++counter">{{counter}}</button>',
+    data: function() {
+        return {
+            counter: 0
+        };
+    }
+});
+
+new Vue({el: '#example-2'});
+
+Vue.component('child', {
+    props: ['myMessage'],
+    template: '<span>{{myMessage}}</span>'
+});
+
+new Vue({el: '#example-3'});
+
+new Vue({
+    el: '#example-4',
+    data: {
+        parentMsg: '이건 function이 아님'
+    },
+    components: {
+        child: {
+            template: '<span>{{myMessage}}</span>',
+            props: ['myMessage']
+        }
+    }
+});
+
+Vue.component('button-counter', {
+    template: '<button v-on:click="incrementCounter">{{counter}}</button>',
+    data: function() {
+        return {
+            counter: 0
+        };
+    },
+    methods: {
+        incrementCounter: function() {
+            this.counter += 1;
+            this.$emit('increment');
+        }
+    }
+});
+
+new Vue({
+    el: '#counter-event-example',
+    data: {
+        total: 0
+    },
+    methods: {
+        incrementTotal: function() {
+            this.total += 100;
+        },
+        doTheThing: function(e) {
+            console.log(e);
+        }
+    }
+});
+
+Vue.component('currency-input', {
+    template: '\
+        <span>\
+        $\
+        <input ref="input" v-bind:value="value" v-on:input="updateValue($event.target.value)">\
+        </span>\
+        ',
+    props: ['value'],
+    methods: {
+        updateValue: function(newValue) {
+            var formattedValue = newValue.trim()
+                                .slice(
+                                    0,
+                                    newValue.indexOf('.') === -1?
+                                    newValue.length:
+                                    newValue.indexOf('.') + 3)
+            if(formattedValue !== newValue) {
+                this.$refs.input.value = formattedValue;
+            }
+
+            this.$emit('input', Number(formattedValue));
+        }
+    }
+});
+
+new Vue({
+    el: '#custom-input',
+    data: {
+        price: 'aaa'
+    }
+});
+
+    </script>
 </body>
 </html>
